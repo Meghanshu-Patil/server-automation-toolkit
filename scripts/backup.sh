@@ -18,7 +18,7 @@ timestamp="$(date '+%Y-%m-%d_%H%M')"
 archive="$BACKUP_DEST/backup-$timestamp.tar.gz"
 
 
-if tar -czf "$archive" "$BACKUP_SOURCE" 2>/dev/null; then
+if tar -czf "$archive" "$BACKUP_SOURCE"; then
     size="$(du -h "$archive" | cut -f1)"
     log "Backup created: $archive ($size)"
 else

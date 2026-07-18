@@ -2,7 +2,9 @@
 
 
 
-mkdir -p "$LOG_DIR" 2>/dev/null
+# Without root we can't write to /var/log, so fall back to a temp dir
+# rather than letting every single log line fail.
+mkdir -p "$LOG_DIR" 2>/dev/null || LOG_DIR="${TMPDIR:-/tmp}"
 
 log() {
     local message="$1"

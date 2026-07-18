@@ -1,0 +1,15 @@
+
+# Files in /etc/cron.d need a user field between the schedule and the
+# command — that's the "root" in each line below.
+
+# Full backup every night at 2:30 AM
+30 2 * * *   root /opt/toolkit/scripts/backup.sh
+
+# Clean up old log files every Sunday at 3:00 AM
+0 3 * * 0    root /opt/toolkit/scripts/log_cleanup.sh
+
+# Check that important services are running, every 5 minutes
+*/5 * * * *  root /opt/toolkit/scripts/service_monitor.sh
+
+# Check disk usage every 15 minutes
+*/15 * * * * root /opt/toolkit/scripts/disk_alert.sh
