@@ -1,5 +1,7 @@
 # Linux Server Automation Toolkit
 
+[![CI](https://github.com/Meghanshu-Patil/server-automation-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/Meghanshu-Patil/server-automation-toolkit/actions/workflows/ci.yml)
+
 A collection of Bash scripts that automate everyday server maintenance:
 backups, log cleanup, service monitoring, and disk usage alerts — all
 scheduled with cron and version-controlled with Git.
