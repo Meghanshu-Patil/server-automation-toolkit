@@ -1,0 +1,48 @@
+# ============================================================
+# CI  —  Runs automatically on GitHub every time you push code.
+# It does two things:
+#   1. Syntax-checks every script (catches typos that break Bash)
+#   2. Lints every script with ShellCheck (catches common bugs)
+# A green check on your repo = all scripts are valid.
+# ============================================================
+
+name: CI
+
+# When should this run? On every push and pull request to main.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    # Run on a fresh Ubuntu machine that GitHub gives us for free
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: download your repo onto the runner
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      # Step 2: make sure every script has valid Bash syntax
+      - name: Syntax check all scripts
+        run: |
+          for f in config.sh install.sh lib/*.sh scripts/*.sh; do
+            echo "Checking syntax: $f"
+            bash -n "$f"
+          done
+
+      # Step 3: install ShellCheck, the shell-script linter
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      # Step 4: lint the scripts.
+      # We ignore three warnings that are expected for this project's design:
+      #   SC1091 — ShellCheck can't follow the sourced config.sh at lint time
+      #   SC2034 — config.sh's variables look "unused" but other scripts use them
+      #   SC2154 — logging.sh uses variables set by whichever script sources it
+      - name: Lint with ShellCheck
+        run: |
+          shellcheck -e SC1091,SC2034,SC2154 config.sh install.sh lib/*.sh scripts/*.sh
+          echo "All scripts passed ShellCheck!"
